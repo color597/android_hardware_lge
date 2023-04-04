@@ -18,9 +18,8 @@ android_app {
     name: "QuadDACPanel",
 
     srcs: [
-        "src/org/lineageos/hardware/util/FileUtils.java",
-        "src/org/lineageos/settings/device/dac/*.java",
-        "src/org/lineageos/settings/device/dac/*/*.java",
+        "**/*.java",
+        "**/*.kt",
     ],
 
     certificate: "platform",
