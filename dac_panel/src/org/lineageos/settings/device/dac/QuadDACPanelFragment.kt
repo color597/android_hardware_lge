@@ -7,12 +7,12 @@ import android.content.IntentFilter
 import android.media.AudioManager
 import android.os.Bundle
 import android.util.Log
-import android.view.MenuItem
 import androidx.preference.ListPreference
 import androidx.preference.Preference
-import androidx.preference.PreferenceFragment
+import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SeekBarPreference
 import androidx.preference.SwitchPreference
+import com.android.settingslib.widget.MainSwitchPreference
 import org.lineageos.settings.device.dac.ui.BalancePreference
 import org.lineageos.settings.device.dac.utils.Constants
 import org.lineageos.settings.device.dac.utils.QuadDAC
@@ -21,9 +21,9 @@ import vendor.lge.hardware.audio.dac.control.V1_0.HalFeature
 import vendor.lge.hardware.audio.dac.control.V1_0.IDacAdvancedControl
 import vendor.lge.hardware.audio.dac.control.V1_0.IDacHalControl
 
-class QuadDACPanelFragment : PreferenceFragment(), Preference.OnPreferenceChangeListener {
+class QuadDACPanelFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChangeListener {
 
-    private lateinit var quadDacSwitch: SwitchPreference
+    private lateinit var quadDacSwitch: MainSwitchPreference
     private lateinit var soundPresetList: ListPreference
     private lateinit var digitalFilterList: ListPreference
     private lateinit var modeList: ListPreference
@@ -39,7 +39,6 @@ class QuadDACPanelFragment : PreferenceFragment(), Preference.OnPreferenceChange
     private lateinit var dhcFeatures: ArrayList<Int>
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        activity.actionBar!!.setDisplayHomeAsUpEnabled(true)
         headsetPluggedFragmentReceiver = HeadsetPluggedFragmentReceiver()
         try {
             dac = IDacAdvancedControl.getService(true)
@@ -54,18 +53,6 @@ class QuadDACPanelFragment : PreferenceFragment(), Preference.OnPreferenceChange
 
     override fun onPreferenceChange(preference: Preference, newValue: Any): Boolean {
         try {
-            if (preference is SwitchPreference) {
-                val setDacOn = newValue as Boolean
-                return if (setDacOn) {
-                    enableExtraSettings()
-                    QuadDAC.enable(dhc, dac)
-                    true
-                } else {
-                    disableExtraSettings()
-                    QuadDAC.disable(dhc)
-                    true
-                }
-            }
             if (preference is ListPreference) {
                 when (preference.key) {
                     Constants.HIFI_MODE_KEY -> {
@@ -89,7 +76,6 @@ class QuadDACPanelFragment : PreferenceFragment(), Preference.OnPreferenceChange
             if (preference is SeekBarPreference) {
                 if (preference.key == Constants.AVC_VOLUME_KEY) {
                     return if (newValue is Int) {
-                        //avc_volume.setSummary( ((double)avc_vol) + " db");
                         QuadDAC.setAVCVolume(dac, newValue)
                         true
                     } else {
@@ -105,22 +91,30 @@ class QuadDACPanelFragment : PreferenceFragment(), Preference.OnPreferenceChange
 
     override fun onResume() {
         val filter = IntentFilter(Intent.ACTION_HEADSET_PLUG)
-        activity.registerReceiver(headsetPluggedFragmentReceiver, filter)
+        requireContext().registerReceiver(headsetPluggedFragmentReceiver, filter)
         super.onResume()
     }
 
     override fun onPause() {
-        activity.unregisterReceiver(headsetPluggedFragmentReceiver)
+        requireContext().unregisterReceiver(headsetPluggedFragmentReceiver)
         super.onPause()
     }
 
     override fun addPreferencesFromResource(preferencesResId: Int) {
         super.addPreferencesFromResource(preferencesResId)
         // Initialize preferences
-        val am = context.getSystemService(AudioManager::class.java)
+        val am = requireContext().getSystemService(AudioManager::class.java)
 
         quadDacSwitch = findPreference(Constants.DAC_SWITCH_KEY)!!
-        quadDacSwitch.onPreferenceChangeListener = this
+        quadDacSwitch.addOnSwitchChangeListener { _, isChecked ->
+            if (isChecked) {
+                enableExtraSettings()
+                QuadDAC.enable(dhc, dac)
+            } else {
+                disableExtraSettings()
+                QuadDAC.disable(dhc)
+            }
+        }
         soundPresetList = findPreference(Constants.SOUND_PRESET_KEY)!!
         soundPresetList.onPreferenceChangeListener = this
         digitalFilterList = findPreference(Constants.DIGITAL_FILTER_KEY)!!
@@ -178,16 +172,6 @@ class QuadDACPanelFragment : PreferenceFragment(), Preference.OnPreferenceChange
         } catch (e: Exception) {
             Log.d(TAG, "addPreferencesFromResource: $e")
         }
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            android.R.id.home -> {
-                activity.finish()
-                return true
-            }
-        }
-        return super.onOptionsItemSelected(item)
     }
 
     private fun enableExtraSettings() {

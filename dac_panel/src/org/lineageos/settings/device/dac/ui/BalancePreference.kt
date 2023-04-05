@@ -3,13 +3,12 @@ package org.lineageos.settings.device.dac.ui
 import android.content.Context
 import android.util.AttributeSet
 import android.util.Log
-import android.widget.Button
 import android.widget.TextView
 import androidx.preference.Preference
 import androidx.preference.PreferenceViewHolder
+import com.google.android.material.button.MaterialButton
 import org.lineageos.settings.device.dac.R
 import org.lineageos.settings.device.dac.utils.QuadDAC
-import vendor.lge.hardware.audio.dac.control.V1_0.FeatureStates
 import vendor.lge.hardware.audio.dac.control.V1_0.HalFeature
 import vendor.lge.hardware.audio.dac.control.V1_0.IDacHalControl
 
@@ -23,10 +22,10 @@ class BalancePreference @JvmOverloads constructor(
     private var rightBalance = 0
     private var maxAllowedValue = 0
     private var minAllowedValue = -12
-    private lateinit var btLeftPlus: Button
-    private lateinit var btLeftMinus: Button
-    private lateinit var btRightPlus: Button
-    private lateinit var btRightMinus: Button
+    private lateinit var btLeftPlus: MaterialButton
+    private lateinit var btLeftMinus: MaterialButton
+    private lateinit var btRightPlus: MaterialButton
+    private lateinit var btRightMinus: MaterialButton
     private lateinit var tvLeft: TextView
     private lateinit var tvRight: TextView
     private lateinit var dhc: IDacHalControl
@@ -37,17 +36,15 @@ class BalancePreference @JvmOverloads constructor(
 
     override fun onBindViewHolder(holder: PreferenceViewHolder) {
         super.onBindViewHolder(holder)
-        holder.itemView.isClickable = false
-        btLeftPlus = holder.findViewById(R.id.bt_left_plus) as Button
-        btLeftMinus = holder.findViewById(R.id.bt_left_minus) as Button
-        btRightPlus = holder.findViewById(R.id.bt_right_plus) as Button
-        btRightMinus = holder.findViewById(R.id.bt_right_minus) as Button
-        tvLeft = holder.findViewById(R.id.tv_left_val) as TextView
-        tvRight = holder.findViewById(R.id.tv_right_val) as TextView
-        btLeftPlus.isClickable = true
-        btLeftMinus.isClickable = true
-        btRightPlus.isClickable = true
-        btRightMinus.isClickable = true
+        holder.itemView.apply {
+            isClickable = false
+            btLeftPlus = findViewById(R.id.bt_left_plus)
+            btLeftMinus = findViewById(R.id.bt_left_minus)
+            btRightPlus = findViewById(R.id.bt_right_plus)
+            btRightMinus = findViewById(R.id.bt_right_minus)
+            tvLeft = findViewById(R.id.tv_left_val)
+            tvRight = findViewById(R.id.tv_right_val)
+        }
         btLeftPlus.setOnClickListener { updateLeftBalance(true) }
         btLeftMinus.setOnClickListener { updateLeftBalance(false) }
         btRightPlus.setOnClickListener { updateRightBalance(true) }

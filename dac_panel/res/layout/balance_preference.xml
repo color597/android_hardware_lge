@@ -2,61 +2,53 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:theme="@style/Theme.Material3.DynamicColors.DayNight">
 
     <TextView
-        android:id="@+android:id/title"
-        style="@android:style/TextAppearance.DeviceDefault.SearchResult.Title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/empty_string"
-        android:visibility="gone"/>
-
-    <TextView
-        android:id="@+android:id/summary"
-        style="@android:style/TextAppearance.DeviceDefault.SearchResult.Subtitle"
+        android:id="@android:id/summary"
+        style="@android:style/TextAppearance.DeviceDefault.Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="@string/quad_dac_balance_summary"
-        android:layout_marginBottom="15dp"/>
+        android:layout_marginBottom="15dp"
+        android:text="@string/quad_dac_balance_summary" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+        android:paddingHorizontal="20dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:orientation="vertical"
             android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:orientation="vertical" >
+            android:paddingRight="20dp">
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/bt_left_plus"
-                android:text="+0.5db"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center" />
+                android:layout_gravity="center"
+                android:text="+0.5 db" />
 
             <TextView
                 android:id="@+id/tv_left_val"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:paddingTop="5dp"
-                android:paddingBottom="5dp"
-                android:layout_gravity="center" />
+                android:paddingBottom="5dp" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/bt_left_minus"
-                android:text="-0.5db"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center" />
+                android:layout_gravity="center"
+                android:text="-0.5 db" />
 
         </LinearLayout>
 
@@ -64,45 +56,35 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:orientation="vertical"
             android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:orientation="vertical" >
+            android:paddingRight="20dp">
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/bt_right_plus"
-                android:text="+0.5db"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center" />
+                android:layout_gravity="center"
+                android:text="+0.5 db" />
 
             <TextView
                 android:id="@+id/tv_right_val"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:paddingTop="5dp"
-                android:paddingBottom="5dp"
-                android:layout_gravity="center" />
+                android:paddingBottom="5dp" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/bt_right_minus"
-                android:text="-0.5db"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center" />
+                android:layout_gravity="center"
+                android:text="-0.5 db" />
 
         </LinearLayout>
 
     </LinearLayout>
-
-    <LinearLayout android:id="@+android:id/widget_frame"
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:gravity="center_vertical"
-        android:orientation="vertical" />
-
-    <ImageView android:id="@+android:id/icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
 
 </LinearLayout>
 

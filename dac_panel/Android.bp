@@ -31,6 +31,8 @@ android_app {
         "androidx.preference_preference",
         "androidx.appcompat_appcompat-resources",
         "vendor.lge.hardware.audio.dac.control-V1.0-java",
+        "SettingsLibCollapsingToolbarBaseActivity",
+        "SettingsLibMainSwitchPreference"
     ],
 
     resource_dirs: [

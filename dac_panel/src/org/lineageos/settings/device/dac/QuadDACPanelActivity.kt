@@ -1,14 +1,13 @@
 package org.lineageos.settings.device.dac
 
-import android.R
 import android.os.Bundle
-import android.preference.PreferenceActivity
+import com.android.settingslib.collapsingtoolbar.CollapsingToolbarBaseActivity
 
-class QuadDACPanelActivity : PreferenceActivity() {
+class QuadDACPanelActivity : CollapsingToolbarBaseActivity() {
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        fragmentManager.beginTransaction().replace(
-            R.id.content,
+        supportFragmentManager.beginTransaction().replace(
+            R.id.content_frame,
             QuadDACPanelFragment()
         ).commit()
     }
